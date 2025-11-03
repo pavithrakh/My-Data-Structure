@@ -1,0 +1,57 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct {
+    int *data;       
+    size_t size;     
+    size_t capacity; 
+} DynamicArray;
+
+void initArray(DynamicArray *arr, size_t initialCapacity) {
+    arr->data = (int *)malloc(initialCapacity * sizeof(int));
+    arr->size = 0;
+    arr->capacity = initialCapacity;
+}
+
+void freeArray(DynamicArray *arr) {
+    free(arr->data);
+    arr->data = NULL;
+    arr->size = 0;
+    arr->capacity = 0;
+}
+
+void push(DynamicArray *arr, int value) {
+    if (arr->size == arr->capacity) {
+        arr->capacity *= 2;
+        arr->data = (int *)realloc(arr->data, arr->capacity * sizeof(int));
+        if (arr->data == NULL) {
+            fprintf(stderr, "Memory allocation failed\n");
+            exit(EXIT_FAILURE);
+        }
+    }
+    arr->data[arr->size++] = value; 
+}
+
+void printArray(DynamicArray *arr) {
+    for (size_t i = 0; i < arr->size; i++) {
+        printf("%d ", arr->data[i]);
+    }
+    printf("\n");
+}
+
+int main() {
+    DynamicArray arr;
+    initArray(&arr, 2); 
+
+    push(&arr, 10);
+    push(&arr, 20);
+    push(&arr, 30); 
+    push(&arr, 40);
+
+    printf("Array elements: ");
+    printArray(&arr);
+
+    freeArray(&arr);
+
+    return 0;
+}
