@@ -1,0 +1,39 @@
+#include <stdio.h>
+#include <stdlib.h> 
+
+char *my_strdup(const char *src) {
+    int len = 0;
+
+    while (src[len] != '\0') {
+        len++;
+    }
+
+    char *dup = (char *)malloc(len + 1);
+    if (dup == NULL) {
+        return NULL; 
+    }
+
+    char *dest = dup;
+    while (*src != '\0') {
+        *dest = *src;
+        dest++;
+        src++;
+    }
+
+    *dest = '\0'; 
+
+    return dup;
+}
+
+int main() {
+    char original[] = "ChatGPT";
+    char *copy = my_strdup(original);
+
+    if (copy != NULL) {
+        printf("Original: %s\n", original);
+        printf("Copy: %s\n", copy);
+        free(copy); 
+    }
+
+    return 0;
+}
