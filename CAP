@@ -1,0 +1,13 @@
+#include<stdio.h>
+#define CAP 11
+void pavi(int a[], int n);
+void pavi(int a[CAP], int n){
+    for(int i=0; i<n && i<CAP; i++){
+        a[i]=i;
+        printf("%d ",a[i]);
+    }
+}
+int main() {
+    int a[CAP], n=160;
+    pavi(a,n);
+}
