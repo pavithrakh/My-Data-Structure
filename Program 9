@@ -1,0 +1,32 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+char** split(char *str, char delim, int *count) {
+    char **result = NULL;
+    char *token, *temp = strdup(str);
+    *count = 0;
+
+    token = strtok(temp, &delim);
+    while (token) {
+        result = realloc(result, (*count + 1) * sizeof(char*));
+        result[*count] = strdup(token);
+        (*count)++;
+        token = strtok(NULL, &delim);
+    }
+    free(temp);
+    return result;
+}
+
+int main() {
+    char s[] = "apple,banana,grape";
+    int n;
+    char **tokens = split(s, ',', &n);
+
+    for (int i = 0; i < n; i++) {
+        printf("%s\n", tokens[i]);
+        free(tokens[i]);
+    }
+    free(tokens);
+    return 0;
+}
