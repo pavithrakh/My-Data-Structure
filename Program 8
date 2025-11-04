@@ -1,0 +1,35 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    int students;
+    printf("Enter number of students: ");
+    scanf("%d", &students);
+
+    int **marks = (int**)malloc(students * sizeof(int*));
+    int *count = (int*)malloc(students * sizeof(int));
+    float *avg = (float*)malloc(students * sizeof(float));
+
+    for (int i = 0; i < students; i++) {
+        printf("Enter subjects for student %d: ", i+1);
+        scanf("%d", &count[i]);
+        marks[i] = (int*)malloc(count[i]*sizeof(int));
+
+        int sum = 0;
+        for (int j = 0; j < count[i]; j++) {
+            scanf("%d", &marks[i][j]);
+            sum += marks[i][j];
+        }
+        avg[i] = (float)sum / count[i];
+    }
+
+    int topper = 0;
+    for (int i = 1; i < students; i++)
+        if (avg[i] > avg[topper]) topper = i;
+
+    printf("Topper: Student %d with average %.2f\n", topper+1, avg[topper]);
+
+    for (int i = 0; i < students; i++) free(marks[i]);
+    free(marks); free(count); free(avg);
+    return 0;
+}
