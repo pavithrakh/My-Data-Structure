@@ -1,0 +1,31 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct {
+    int W, H;
+    unsigned char *data;
+} Image;
+
+unsigned char get(Image *img, int x, int y) {
+    return img->data[y * img->W + x];
+}
+
+void set(Image *img, int x, int y, unsigned char val) {
+    img->data[y * img->W + x] = val;
+}
+
+int main() {
+    int W=3, H=3;
+    Image img = {W, H, malloc(W * H)};
+    for (int y=0;y<H;y++)
+        for (int x=0;x<W;x++)
+            set(&img, x, y, x+y);
+
+    for (int y=0;y<H;y++) {
+        for (int x=0;x<W;x++)
+            printf("%d ", get(&img, x, y));
+        printf("\n");
+    }
+    free(img.data);
+    return 0;
+}
