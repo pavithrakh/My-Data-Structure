@@ -1,0 +1,73 @@
+#include <stdio.h>
+#include <stdlib.h>
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+void deleteNodeAtPosition(struct Node** head_ref, int position) {
+    if (*head_ref == NULL) {
+        printf("List is empty. Cannot delete.\n");
+        return;
+    }
+
+    struct Node* temp = *head_ref;
+    struct Node* prev = NULL;
+
+    if (position == 1) {
+        *head_ref = temp->next; 
+        free(temp);             
+        printf("Node at position 1 deleted.\n");
+        return;
+    }
+    for (int i = 1; temp != NULL && i < position; i++) {
+        prev = temp;
+        temp = temp->next;
+    }
+    if (temp == NULL) {
+        printf("Invalid position. Position exceeds list length.\n");
+        return;
+    }
+    prev->next = temp->next;
+    free(temp); 
+    printf("Node at position %d deleted.\n", position);
+}
+
+void push(struct Node** head_ref, int new_data) {
+    struct Node* new_node = (struct Node*)malloc(sizeof(struct Node));
+    new_node->data = new_data;
+    new_node->next = (*head_ref);
+    (*head_ref) = new_node;
+}
+void printList(struct Node* node) {
+    while (node != NULL) {
+        printf("%d -> ", node->data);
+        node = node->next;
+    }
+    printf("NULL\n");
+}
+
+int main() {
+    struct Node* head = NULL;
+
+    push(&head, 4);
+    push(&head, 3);
+    push(&head, 2);
+    push(&head, 1);
+
+    printf("Original Linked List: ");
+    printList(head);
+
+    deleteNodeAtPosition(&head, 3); 
+    printf("Linked List after deletion: ");
+    printList(head);
+
+    deleteNodeAtPosition(&head, 1);
+    printf("Linked List after deletion: ");
+    printList(head);
+
+    deleteNodeAtPosition(&head, 5); 
+    printList(head);
+
+    return 0;
+}
