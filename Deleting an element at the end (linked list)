@@ -1,0 +1,88 @@
+#include <stdio.h>
+#include <stdlib.h>
+struct Node {
+    int data;
+    struct Node *next;
+};
+
+struct Node *createNode(int x) {
+    struct Node *newNode = (struct Node *)malloc(sizeof(struct Node));
+    if (newNode == NULL) {
+        printf("Memory allocation failed!\n");
+        exit(1);
+    }
+    newNode->data = x;
+    newNode->next = NULL;
+    return newNode;
+}
+
+
+struct Node *removeLastNode(struct Node *head) {
+    
+    if (head == NULL) {
+        printf("List is empty. Cannot delete.\n");
+        return NULL;
+    }
+
+    
+    if (head->next == NULL) {
+        free(head);
+        return NULL; 
+    }
+
+    
+    struct Node *secondLast = head;
+    while (secondLast->next->next != NULL) {
+        secondLast = secondLast->next;
+    }
+    free(secondLast->next);
+    secondLast->next = NULL;
+    return head;
+}
+
+void printList(struct Node *head) {
+    while (head != NULL) {
+        printf("%d", head->data);
+        if (head->next != NULL) {
+            printf(" -> ");
+        }
+        head = head->next;
+    }
+    printf(" -> NULL\n");
+}
+
+int main() {
+    
+    struct Node *head = createNode(1);
+    head->next = createNode(2);
+    head->next->next = createNode(3);
+    head->next->next->next = createNode(4);
+    head->next->next->next->next = createNode(5);
+
+    printf("Original list: ");
+    printList(head);
+
+    
+    head = removeLastNode(head);
+
+    printf("List after deleting the last node: ");
+    printList(head);
+
+    
+    struct Node *singleNodeList = createNode(10);
+    printf("Original single-node list: ");
+    printList(singleNodeList);
+    singleNodeList = removeLastNode(singleNodeList);
+    printf("List after deleting the last node (single-node): ");
+    printList(singleNodeList);
+
+    
+    struct Node *emptyList = NULL;
+    printf("Original empty list: ");
+    printList(emptyList);
+    emptyList = removeLastNode(emptyList);
+    printf("List after deleting from empty list: ");
+    printList(emptyList); 
+
+    return 0;
+} 
